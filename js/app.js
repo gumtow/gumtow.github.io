@@ -8,7 +8,9 @@ const $user = $('#user');
 const $cpu = $('#cpu');
 const $boardContainer = $('<div>').addClass('container');
 const $squareToMatch = $('.square-to-match');
-let time;
+const $timer =$('#timer');
+
+
 $('body').append($boardContainer);
 
 // Generate Random Number
@@ -23,8 +25,15 @@ const generateBoard = (player) =>{
         for (let i=1; i<=25; i++){
             const $square = $('<div>').addClass('child').addClass(`child-${i}`).text(randomNum());
             $square.on('click', (event)=>{
-                $(event.target).css('background-color', 'black');
-            })
+                $(event.target).css({'background-color':'rgb(212, 104, 64)', 'color':'#ffffff'});
+                console.log('clicked!')
+            });
+            $square.mouseenter((evt)=>{
+                $(event.target).css({'background-color':'coral', 'color':'#ffffff'});
+            });
+            $square.mouseleave((evt)=>{
+                $(event.target).css({'background-color':'cornsilk', 'color':'#000000'});
+            });
             player.append($square);
         }
     }
@@ -33,14 +42,36 @@ const generateBoard = (player) =>{
 const squareMatch=()=>{
     $squareToMatch.empty();
     $squareToMatch.text(randomNum());
+    
+    timer(10);
+    
 }
 
 // Set and start Timer
-let timeLeft = setInterval(timer, 1000)
+const timer = (time)=>{
+    let timeLeft = time;
+    $timer.text(timeLeft);
+    myVar = setInterval(()=>{
+        timeLeft--;
+        if (timeLeft >= 0){
+            $timer.text(timeLeft);
+        } else if (timeLeft < 0){
+            $timer.text(timeLeft);
+            clearInterval(myVar);
+            squareMatch();
+            // console.log(myVar);
+              
+        }
+    }, 1000);
+    
+};
+
+
 
 
 
     generateBoard($user);
     generateBoard($cpu);
     squareMatch();
+    // timer(10);
 });
