@@ -16,6 +16,9 @@ const $noMatchBtn = $('#no-match');
 const $timer =$('#timer');
 const valArray = [];
 const valInPlay = [];
+const $modal = $('#modal');
+const $modalText = $('#modal-text h1');
+const $closeBtn = $('#close');
 
 // Let
 let turn = "user";
@@ -32,6 +35,7 @@ let myTimer;
 
 // Generate the Board
 const generateBoard = (player) =>{
+        player.empty();
         generateValues();
         for (let i=1; i<=25; i++){    
             // generate 25 squares with randoms numbers
@@ -53,6 +57,17 @@ const squareMatch=()=>{
     $squareToMatch.empty();
     $squareToMatch.text(valInPlay[Math.floor(Math.random()*valInPlay.length)]); 
     // timer(10);    
+}
+
+
+const openModal =(player)=>{
+    $modalText.text(`${player} has won the game!`)
+    $modal.css('display', 'block');
+}
+
+const closeModal =()=>{
+    $modal.css('display', 'none');
+    startGame();
 }
 
 // Set and start Timer
@@ -105,7 +120,12 @@ const hoverOut =(event)=>{
     };
 };
 
+const noMatch = (event) =>{
+    $('audio#pop')[0].play();
+    cpuMatch();
+}
 
+$noMatchBtn.on('click', noMatch);
 
 
 
@@ -135,69 +155,69 @@ const randomIndex = () =>{
 // check to see if CPU has match
 const cpuMatch = () =>{
     for (let i=1; i<=25; i++){
-            const $cpuId = $(`#cpu > #${i}`);
-            if ($cpuId.text() === $squareToMatch.text()){
-                $cpuId.removeClass('open').addClass('matched').css({'background-color':'rgb(212, 104, 64)', 'color':'#ffffff'});
-                        turn = "user";
-                        const removeIndex = valInPlay.indexOf($cpuId.text());
-                        console.log(removeIndex);
-                        valInPlay.splice(removeIndex, 1);
-                        // console.log(valInPlay);
-                        
-            }
-    }
-    turn = "user";
+        const $cpuId = $(`#cpu > #${i}`);
+        if ($cpuId.text() === $squareToMatch.text()){
+            $cpuId.removeClass('open').addClass('matched').css({'background-color':'rgb(212, 104, 64)', 'color':'#ffffff'});
+                    turn = "user";
+                    const removeIndex = valInPlay.indexOf($cpuId.text());
+                    valInPlay.splice(removeIndex, 1);         
+        } else {
+            turn = "user";
+        }
+    } 
     checkWinner('#cpu');
     squareMatch();
 }
 
-$noMatchBtn.on('click', cpuMatch);
+
 
 // Check for a winner
 
 const checkWinner =(player)=>{
     if ($(`${player} > #1`).hasClass('matched') && $(`${player} > #2`).hasClass('matched') && $(`${player} > #3`).hasClass('matched') && $(`${player} > #4`).hasClass('matched') && $(`${player} > #5`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);    
     } else if ($(`${player} > #6`).hasClass('matched') && $(`${player} > #7`).hasClass('matched') && $(`${player} > #8`).hasClass('matched') && $(`${player} > #9`).hasClass('matched') && $(`${player} > #10`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);
     } else if ($(`${player} > #11`).hasClass('matched') && $(`${player} > #12`).hasClass('matched') && $(`${player} > #13`).hasClass('matched') && $(`${player} > #14`).hasClass('matched') && $(`${player} > #15`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);
     } else if ($(`${player} > #16`).hasClass('matched') && $(`${player} > #17`).hasClass('matched') && $(`${player} > #18`).hasClass('matched') && $(`${player} > #19`).hasClass('matched') && $(`${player} > #20`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);
     } else if ($(`${player} > #21`).hasClass('matched') && $(`${player} > #22`).hasClass('matched') && $(`${player} > #23`).hasClass('matched') && $(`${player} > #24`).hasClass('matched') && $(`${player} > #25`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);
     } else if ($(`${player} > #1`).hasClass('matched') && $(`${player} > #6`).hasClass('matched') && $(`${player} > #11`).hasClass('matched') && $(`${player} > #16`).hasClass('matched') && $(`${player} > #21`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);
     } else if ($(`${player} > #2`).hasClass('matched') && $(`${player} > #7`).hasClass('matched') && $(`${player} > #12`).hasClass('matched') && $(`${player} > #17`).hasClass('matched') && $(`${player} > #22`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);
     } else if ($(`${player} > #3`).hasClass('matched') && $(`${player} > #8`).hasClass('matched') && $(`${player} > #13`).hasClass('matched') && $(`${player} > #18`).hasClass('matched') && $(`${player} > #23`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);
     } else if ($(`${player} > #4`).hasClass('matched') && $(`${player} > #9`).hasClass('matched') && $(`${player} > #14`).hasClass('matched') && $(`${player} > #19`).hasClass('matched') && $(`${player} > #24`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);
     } else if ($(`${player} > #5`).hasClass('matched') && $(`${player} > #10`).hasClass('matched') && $(`${player} > #15`).hasClass('matched') && $(`${player} > #20`).hasClass('matched') && $(`${player} > #25`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);
     } else if ($(`${player} > #1`).hasClass('matched') && $(`${player} > #7`).hasClass('matched') && $(`${player} > #13`).hasClass('matched') && $(`${player} > #19`).hasClass('matched') && $(`${player} > #25`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);
     } else if ($(`${player} > #5`).hasClass('matched') && $(`${player} > #9`).hasClass('matched') && $(`${player} > #13`).hasClass('matched') && $(`${player} > #17`).hasClass('matched') && $(`${player} > #21`).hasClass('matched')) {
-        endGame(player);
+        openModal(player);
         
     };
 }
 
-const endGame=(player)=>{
-    alert(`${player} won!!!`);
+// const endGame=(player)=>{
+//     alert(`${player} won!!!`);
     
-    clearInterval(myTimer);
-}
+//     clearInterval(myTimer);
+// }
 
 
 
 
-
+// Start Game
+const startGame =()=>{
     generateBoard($user);
     generateBoard($cpu);
-    // console.log(valInPlay);
     squareMatch();
-    // const whichPlayer = '#user';
-    // console.log($(`${whichPlayer} > #1`));
+};
+
+startGame();
+$closeBtn.on('click', closeModal);
 });
