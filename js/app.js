@@ -2,18 +2,117 @@
 // OnLoad
 $(()=>{
 
+// =====================================================
 // Define Global Variables
+// 
+// =====================================================
 
+
+// Const
 const $user = $('#user');
 const $cpu = $('#cpu');
-const $boardContainer = $('<div>').addClass('container');
 const $squareToMatch = $('.square-to-match');
+const $noMatchBtn = $('#no-match');
 const $timer =$('#timer');
-let turn = "user";
-let myVar;
 const valArray = [];
 const valInPlay = [];
 
+// Let
+let turn = "user";
+let myTimer;
+
+
+
+
+
+// =====================================================
+// Generate User Interface
+// 
+// =====================================================
+
+// Generate the Board
+const generateBoard = (player) =>{
+        generateValues();
+        for (let i=1; i<=25; i++){    
+            // generate 25 squares with randoms numbers
+            const $square = $('<div>').addClass('child').attr('id', i).addClass('open').text(randomIndex());
+            valInPlay.push($square.text());
+            if (player === $user){
+                $square.on('click', takeTurn);
+                $square.mouseenter(hover);
+                $square.mouseleave(hoverOut);
+            }
+            // Append square to the board
+            player.append($square);
+        }
+    }
+
+
+// Generate Square to Match
+const squareMatch=()=>{
+    $squareToMatch.empty();
+    $squareToMatch.text(valInPlay[Math.floor(Math.random()*valInPlay.length)]); 
+    // timer(10);    
+}
+
+// Set and start Timer
+// const timer = (time)=>{
+//     let timeLeft = time;
+//     $timer.text(timeLeft);
+//     myTimer = setInterval(()=>{
+//         timeLeft--;
+//         if (timeLeft >= 0){
+//             $timer.text(timeLeft);
+//         } else if (timeLeft < 0){
+//             $timer.text(timeLeft);
+//             clearInterval(myTimer);
+//             squareMatch();          
+//         }
+//     }, 1000);
+    
+// };
+
+// =====================================================
+// Event Handlers
+// 
+// =====================================================
+
+const takeTurn = (event)=>{
+    
+    if (turn === "user") {
+        if ($(event.target).text() === $squareToMatch.text()){
+            $('audio#pop')[0].play();
+            $(event.target).removeClass('open').addClass('matched').css({'background-color':'rgb(212, 104, 64)', 'color':'#ffffff'});
+            turn = "cpu";
+            const removeIndex = valInPlay.indexOf($(event.target).text());
+            valInPlay.splice(removeIndex, 1);
+            checkWinner('#user');
+            cpuMatch();
+            squareMatch();
+        };
+    };
+};
+const hover =(event)=>{
+    if ($(event.target).hasClass('open')){
+        if (turn === "user"){
+            $(event.target).css({'background-color':'coral', 'color':'#ffffff'});
+        };
+    };
+};
+const hoverOut =(event)=>{
+    if ($(event.target).hasClass('open')){
+        $(event.target).css({'background-color':'cornsilk', 'color':'#000000'});
+    };
+};
+
+
+
+
+
+// =====================================================
+// Game Logic
+// 
+// =====================================================
 
 
 // Generate Value Array
@@ -25,7 +124,6 @@ const generateValues = () =>{
     console.log(valArray);
 }
 
-
 // Generate Random Number
 const randomIndex = () =>{
     let num = Math.floor((Math.random()*valArray.length));
@@ -33,50 +131,6 @@ const randomIndex = () =>{
     valArray.splice(num, 1);
     return randomNum;
 }
-
-// Generate the Board
-const generateBoard = (player) =>{
-    $('body').append($boardContainer);
-        $boardContainer.empty();
-        generateValues();
-        for (let i=1; i<=25; i++){
-            
-            // generate 25 squares with randoms numbers
-            const $square = $('<div>').addClass('child').attr('id', i).addClass('open').text(randomIndex());
-            valInPlay.push($square.text());
-            
-            // Mouse interactions
-            $square.on('click', (event)=>{
-                if (turn === "user") {
-                    if ($square.text() === $squareToMatch.text()){
-                        $(event.target).removeClass('open').addClass('matched').css({'background-color':'rgb(212, 104, 64)', 'color':'#ffffff'});
-                        turn = "cpu";
-                        const removeIndex = valInPlay.indexOf($square.text());
-                        valInPlay.splice(removeIndex, 1);
-                        checkWinner('#user');
-                        cpuMatch();
-                        squareMatch();
-                    };
-                };
-            });
-            $square.mouseenter((event)=>{
-                if ($(event.target).hasClass('open')){
-                    if (turn === "user"){
-                        $(event.target).css({'background-color':'coral', 'color':'#ffffff'});
-                    };
-                };
-            });
-            $square.mouseleave((event)=>{
-                if ($(event.target).hasClass('open')){
-                    $(event.target).css({'background-color':'cornsilk', 'color':'#000000'});
-                };
-            });
-            
-            // Append square to the board
-            player.append($square);
-
-        }
-    }
 
 // check to see if CPU has match
 const cpuMatch = () =>{
@@ -97,32 +151,7 @@ const cpuMatch = () =>{
     squareMatch();
 }
 
-
-
-// Generate Square to Match
-const squareMatch=()=>{
-    $squareToMatch.empty();
-    $squareToMatch.text(valInPlay[Math.floor(Math.random()*valInPlay.length)]); 
-    // cpuMatch();
-    // timer(10);    
-}
-
-// Set and start Timer
-// const timer = (time)=>{
-//     let timeLeft = time;
-//     $timer.text(timeLeft);
-//     myVar = setInterval(()=>{
-//         timeLeft--;
-//         if (timeLeft >= 0){
-//             $timer.text(timeLeft);
-//         } else if (timeLeft < 0){
-//             $timer.text(timeLeft);
-//             clearInterval(myVar);
-//             squareMatch();          
-//         }
-//     }, 1000);
-    
-// };
+$noMatchBtn.on('click', cpuMatch);
 
 // Check for a winner
 
@@ -156,8 +185,9 @@ const checkWinner =(player)=>{
 }
 
 const endGame=(player)=>{
-    alert(`${player} won!!!`)
-    clearInterval(myVar);
+    alert(`${player} won!!!`);
+    
+    clearInterval(myTimer);
 }
 
 
