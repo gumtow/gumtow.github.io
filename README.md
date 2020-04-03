@@ -3,6 +3,10 @@
 ## Concept
 
 ## Technologies Used
+- HTML
+- CSS
+- Javascript
+- Jquery
 
 ## Approach
 
@@ -14,6 +18,8 @@
 <img src="images/flow-chart.png">
 
 ### Wireframe
-
+<img src="images/wireframe.png">
 
 ## App Demo
+Take a look at my project hosted on GitHub Pages  
+<https://gumtow.github.io/>
