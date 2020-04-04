@@ -22,7 +22,9 @@ const $closeBtn = $('#close');
 
 // Let
 let turn = "user";
+let timeLeft = 10;
 let myTimer;
+
 
 
 
@@ -56,13 +58,20 @@ const generateBoard = (player) =>{
 const squareMatch=()=>{
     $squareToMatch.empty();
     $squareToMatch.text(valInPlay[Math.floor(Math.random()*valInPlay.length)]); 
-    // timer(10);    
+    startTimer();    
 }
 
 
 const openModal =(player)=>{
-    $modalText.text(`${player} has won the game!`)
+    stopTimer();
+    if(player === "#user"){
+        $modalText.text(`Congrats, You have won the game!`);
+    };
+    if(player === "#cpu"){
+        $modalText.text(`Better luck next. The computer won the game!`);
+        };
     $modal.css('display', 'block');
+    
 }
 
 const closeModal =()=>{
@@ -70,22 +79,32 @@ const closeModal =()=>{
     startGame();
 }
 
-// Set and start Timer
-// const timer = (time)=>{
-//     let timeLeft = time;
-//     $timer.text(timeLeft);
-//     myTimer = setInterval(()=>{
-//         timeLeft--;
-//         if (timeLeft >= 0){
-//             $timer.text(timeLeft);
-//         } else if (timeLeft < 0){
-//             $timer.text(timeLeft);
-//             clearInterval(myTimer);
-//             squareMatch();          
-//         }
-//     }, 1000);
-    
-// };
+// Reset and start Timer
+const startTimer = ()=>{
+    clearInterval(myTimer);
+    timeLeft = 10;
+     myTimer = setInterval(()=>{
+        timer();
+        timeLeft--;
+    }, 1000);
+};
+
+// Timer Function
+const timer = ()=>{
+    $timer.text(timeLeft);  
+        if (timeLeft > 0){
+            $timer.text(timeLeft);
+        } else if (timeLeft <= 0){
+            stopTimer();
+            timeLeft = 10;
+            cpuMatch();          
+        }  
+};
+
+// stopTimer
+const stopTimer=()=>{
+    clearInterval(myTimer);
+}
 
 // =====================================================
 // Event Handlers
@@ -101,9 +120,9 @@ const takeTurn = (event)=>{
             turn = "cpu";
             const removeIndex = valInPlay.indexOf($(event.target).text());
             valInPlay.splice(removeIndex, 1);
-            checkWinner('#user');
             cpuMatch();
-            squareMatch();
+            checkWinner('#user');
+            
         };
     };
 };
@@ -157,7 +176,7 @@ const cpuMatch = () =>{
     for (let i=1; i<=25; i++){
         const $cpuId = $(`#cpu > #${i}`);
         if ($cpuId.text() === $squareToMatch.text()){
-            $cpuId.removeClass('open').addClass('matched').css({'background-color':'rgb(212, 104, 64)', 'color':'#ffffff'});
+            $cpuId.removeClass('open').addClass('matched').css({'background-color':'rgb(100, 104, 64)', 'color':'#ffffff'});
                     turn = "user";
                     const removeIndex = valInPlay.indexOf($cpuId.text());
                     valInPlay.splice(removeIndex, 1);         
@@ -166,7 +185,7 @@ const cpuMatch = () =>{
         }
     } 
     checkWinner('#cpu');
-    squareMatch();
+    // squareMatch();
 }
 
 
@@ -197,17 +216,11 @@ const checkWinner =(player)=>{
     } else if ($(`${player} > #1`).hasClass('matched') && $(`${player} > #7`).hasClass('matched') && $(`${player} > #13`).hasClass('matched') && $(`${player} > #19`).hasClass('matched') && $(`${player} > #25`).hasClass('matched')) {
         openModal(player);
     } else if ($(`${player} > #5`).hasClass('matched') && $(`${player} > #9`).hasClass('matched') && $(`${player} > #13`).hasClass('matched') && $(`${player} > #17`).hasClass('matched') && $(`${player} > #21`).hasClass('matched')) {
-        openModal(player);
-        
+        openModal(player);      
+    } else {
+        squareMatch();
     };
 }
-
-// const endGame=(player)=>{
-//     alert(`${player} won!!!`);
-    
-//     clearInterval(myTimer);
-// }
-
 
 
 
