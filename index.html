@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B-I-N-G-O</title>
+    <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script
     src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -21,11 +22,14 @@
         </section>
         <section class="container">
             <div id="user-container">
-                <div id="user-name">USER</div>
+                <div id="user-name"></div>
                 <div id="user" class="parent"></div>
                 <div id="no-match">Next Square</div>
             </div>
-            <div id="timer"></div>
+            <div id="info">
+                <div>Time Left</div>
+                <div id="timer"></div>
+            </div>  
             <div id="cpu-container">
                 <div id="cpu-name">CPU</div>
                 <div id="cpu" class="parent"></div>
@@ -33,11 +37,20 @@
         </section>
 
     </main>
-    <div id="modal">
-        
+    <div id="winner-modal">      
         <div id="modal-text">
             <div id="close">x</div>
             <h1></h1>
+        </div>
+    </div>
+    <div id="new-game-modal">      
+        <div id="new-game-modal-text">
+            <h1>Hello, Let's play some bingo!</h1>
+            <h3>Please enter your name.</h3>
+            <form action="submit">
+                <input id ="player-name" type="text" placeholder="Enter your name">
+                <button id="inputButton" type ="submit">Start Game</button>
+            </form>
         </div>
     </div>
     <audio id="pop">

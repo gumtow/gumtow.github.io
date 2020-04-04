@@ -16,9 +16,13 @@ const $noMatchBtn = $('#no-match');
 const $timer =$('#timer');
 const valArray = [];
 const valInPlay = [];
-const $modal = $('#modal');
+const $winnerModal = $('#winner-modal');
+const $newGameModal = $('#new-game-modal');
 const $modalText = $('#modal-text h1');
 const $closeBtn = $('#close');
+const $submit = $('#inputButton');
+const $userName = $('#user-name');
+
 
 // Let
 let turn = "user";
@@ -30,10 +34,12 @@ let myTimer;
 
 
 
+
 // =====================================================
 // Generate User Interface
 // 
 // =====================================================
+
 
 // Generate the Board
 const generateBoard = (player) =>{
@@ -68,15 +74,14 @@ const openModal =(player)=>{
         $modalText.text(`Congrats, You have won the game!`);
     };
     if(player === "#cpu"){
-        $modalText.text(`Better luck next. The computer won the game!`);
+        $modalText.text(`Too bad, the CPU won the game!`);
         };
-    $modal.css('display', 'block');
-    
+    $winnerModal.css('display', 'block');  
 }
 
 const closeModal =()=>{
-    $modal.css('display', 'none');
-    startGame();
+    $winnerModal.css('display', 'none');
+    newGame();
 }
 
 // Reset and start Timer
@@ -144,7 +149,7 @@ const noMatch = (event) =>{
     cpuMatch();
 }
 
-$noMatchBtn.on('click', noMatch);
+
 
 
 
@@ -156,7 +161,7 @@ $noMatchBtn.on('click', noMatch);
 
 // Generate Value Array
 const generateValues = () =>{
-    valArray.splice(0, valArray.length);
+    valArray.length = 0;
     for (let i=1; i<=50; i++){
         valArray.push(i);
     };
@@ -185,7 +190,6 @@ const cpuMatch = () =>{
         }
     } 
     checkWinner('#cpu');
-    // squareMatch();
 }
 
 
@@ -226,11 +230,27 @@ const checkWinner =(player)=>{
 
 // Start Game
 const startGame =()=>{
+    console.log('Start Game was run');
+    event.preventDefault();
+    $newGameModal.css('display', 'none');
+    $name = $('#player-name').val();
+    $userName.text($name);
     generateBoard($user);
     generateBoard($cpu);
     squareMatch();
+    
 };
 
-startGame();
+// New game Modal
+
+const newGame = ()=>{
+    $newGameModal.css('display', 'block');
+}
+
+newGame();
+$noMatchBtn.on('click', noMatch);
+
 $closeBtn.on('click', closeModal);
+
+$submit.on('click', startGame);
 });
