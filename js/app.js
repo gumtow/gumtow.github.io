@@ -4,9 +4,7 @@ $(()=>{
 
 // =====================================================
 // Define Global Variables
-// 
 // =====================================================
-
 
 // Const
 const $user = $('#user');
@@ -23,23 +21,15 @@ const $closeBtn = $('#close');
 const $submit = $('#inputButton');
 const $userName = $('#user-name');
 
-
 // Let
 let turn = "user";
 let timeLeft = 10;
 let myTimer;
 
 
-
-
-
-
-
 // =====================================================
 // Generate User Interface
-// 
 // =====================================================
-
 
 // Generate the Board
 const generateBoard = (player) =>{
@@ -67,7 +57,7 @@ const squareMatch=()=>{
     startTimer();    
 }
 
-
+// Open Modal
 const openModal =(player)=>{
     stopTimer();
     if(player === "#user"){
@@ -79,10 +69,16 @@ const openModal =(player)=>{
     $winnerModal.css('display', 'block');  
 }
 
+// Close Modal
 const closeModal =()=>{
     $winnerModal.css('display', 'none');
     newGame();
 }
+
+
+// =====================================================
+// Game Logic
+// =====================================================
 
 // Reset and start Timer
 const startTimer = ()=>{
@@ -110,53 +106,6 @@ const timer = ()=>{
 const stopTimer=()=>{
     clearInterval(myTimer);
 }
-
-// =====================================================
-// Event Handlers
-// 
-// =====================================================
-
-const takeTurn = (event)=>{
-    
-    if (turn === "user") {
-        if ($(event.target).text() === $squareToMatch.text()){
-            $('audio#pop')[0].play();
-            $(event.target).removeClass('open').addClass('matched').css({'background-color':'rgb(212, 104, 64)', 'color':'#ffffff'});
-            turn = "cpu";
-            const removeIndex = valInPlay.indexOf($(event.target).text());
-            valInPlay.splice(removeIndex, 1);
-            cpuMatch();
-            checkWinner('#user');
-            
-        };
-    };
-};
-const hover =(event)=>{
-    if ($(event.target).hasClass('open')){
-        if (turn === "user"){
-            $(event.target).css({'background-color':'coral', 'color':'#ffffff'});
-        };
-    };
-};
-const hoverOut =(event)=>{
-    if ($(event.target).hasClass('open')){
-        $(event.target).css({'background-color':'cornsilk', 'color':'#000000'});
-    };
-};
-
-const noMatch = (event) =>{
-    $('audio#pop')[0].play();
-    cpuMatch();
-}
-
-
-
-
-
-// =====================================================
-// Game Logic
-// 
-// =====================================================
 
 
 // Generate Value Array
@@ -192,7 +141,11 @@ const cpuMatch = () =>{
     checkWinner('#cpu');
 }
 
-
+    // Generate Next Square to Match if no User Match
+    const noMatch = (event) =>{
+        $('audio#pop')[0].play();
+        cpuMatch();
+    }
 
 // Check for a winner
 
@@ -226,7 +179,9 @@ const checkWinner =(player)=>{
     };
 }
 
-
+// =====================================================
+// Start and reset Game
+// =====================================================
 
 // Start Game
 const startGame =()=>{
@@ -248,9 +203,51 @@ const newGame = ()=>{
 }
 
 newGame();
-$noMatchBtn.on('click', noMatch);
 
-$closeBtn.on('click', closeModal);
 
-$submit.on('click', startGame);
+// =====================================================
+// Event Handlers
+// =====================================================
+
+const takeTurn = (event)=>{
+  
+    // User Clicks on square
+    if (turn === "user") {
+        if ($(event.target).text() === $squareToMatch.text()){
+            $('audio#pop')[0].play();
+            $(event.target).removeClass('open').addClass('matched').css({'background-color':'rgb(212, 104, 64)', 'color':'#ffffff'});
+            turn = "cpu";
+            const removeIndex = valInPlay.indexOf($(event.target).text());
+            valInPlay.splice(removeIndex, 1);
+            cpuMatch();
+            checkWinner('#user');
+            
+        };
+    };
+};
+
+    // User Hover state
+    const hover =(event)=>{
+        if ($(event.target).hasClass('open')){
+            if (turn === "user"){
+                $(event.target).css({'background-color':'coral', 'color':'#ffffff'});
+            };
+        };
+    };
+
+    // Remove User Hover
+    const hoverOut =(event)=>{
+        if ($(event.target).hasClass('open')){
+            $(event.target).css({'background-color':'cornsilk', 'color':'#000000'});
+        };
+    };
+
+    // Next square to match
+    $noMatchBtn.on('click', noMatch);
+
+    // Close winner modal
+    $closeBtn.on('click', closeModal);
+
+    // Submit User Name and Start the game
+    $submit.on('click', startGame);
 });
