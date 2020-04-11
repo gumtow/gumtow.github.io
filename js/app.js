@@ -47,6 +47,7 @@ const generateBoard = (player) =>{
             // Append square to the board
             player.append($square);
         }
+        console.log(`values in play = ${valInPlay}`);
     }
 
 
@@ -110,7 +111,8 @@ const stopTimer=()=>{
 
 // Generate Value Array
 const generateValues = () =>{
-    valArray.length = 0;
+    valArray.splice(0,valArray.length);
+    console.log(valArray);
     for (let i=1; i<=50; i++){
         valArray.push(i);
     };
@@ -186,6 +188,7 @@ const checkWinner =(player)=>{
 // Start Game
 const startGame =()=>{
     console.log('Start Game was run');
+    valInPlay.splice(0,valInPlay.length);
     event.preventDefault();
     $newGameModal.css('display', 'none');
     $name = $('#player-name').val();
