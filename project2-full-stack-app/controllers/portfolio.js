@@ -36,7 +36,6 @@ router.get('/seed', (req, res)=>{
            portfolio: allItems
            
         });
-        // res.send(allItems);
     })
  });
 
@@ -44,7 +43,13 @@ router.get('/seed', (req, res)=>{
 
 
 // 03. Show Route
-
+router.get('/:id', (req, res)=>{
+    Portfolio.findById(req.params.id, (err, portfolioItem)=>{
+        res.render('Show', {
+            portfolio:portfolioItem
+        });
+    });
+});
 
 // 04. Edit Route
 

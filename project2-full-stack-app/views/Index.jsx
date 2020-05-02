@@ -13,11 +13,15 @@ class Index extends React.Component{
                     {
                         portfolio.map((portfolioItem, i)=>{
                             return(
-                                <div className="col-md-4" key={i}>
-                                    <h3>{portfolioItem.title}</h3>
-                                    <img src={portfolioItem.img} alt={portfolioItem.title}/>
-                                    <p>{portfolioItem.description}</p>
+                                <div className="col-md-3" key={i}>
+                                    <a href={`/jgumtow/${portfolioItem.id}`}>
+                                        <div>
+                                            <h3>{portfolioItem.title}</h3>
+                                            <img className="img-fluid" src={portfolioItem.img} alt={portfolioItem.title}/>
+                                            <p>{portfolioItem.description}</p>
 
+                                        </div>
+                                    </a>
                                 </div>
                             )
                         })
