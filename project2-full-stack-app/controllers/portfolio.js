@@ -15,29 +15,30 @@ const Portfolio = require('../models/portfolio.js');
  * *************************************************************************/
 // Seed
 router.get('/seed', (req, res)=>{
-    Fruit.create([
+    Portfolio.create([
         {
-            name:'grapefruit',
-            color:'pink',
-            readyToEat:true
-        },
-        {
-            name:'grape',
-            color:'purple',
-            readyToEat:false
-        },
-        {
-            name:'avocado',
-            color:'green',
-            readyToEat:true
+            title:"Animated Upbring Golf Logo",
+            img:"../img/golf-logo-01.gif",
+            description:"I designed an animated logo for the annual Upbring golf tournament.",
+            tags: ["gif", "logo", "Upbring"],
+            rating: 4,
+            show:true
         }
     ], (err, data)=>{
-        res.redirect('/fruits');
+        res.redirect('/jgumtow');
     })
 });
 
 // 01. Index Route
- 
+ router.get('/', (req, res)=>{
+    Portfolio.find({}, (error, allItems)=>{
+        res.render('Index', {
+           portfolio: allItems
+           
+        });
+        // res.send(allItems);
+    })
+ });
 
 // 02. New Route
 
