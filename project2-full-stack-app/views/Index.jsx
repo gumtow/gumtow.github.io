@@ -26,6 +26,9 @@ class Index extends React.Component{
                                         </div>
                                     </a>
                                     <a className="btn btn-outline-info btn-sm" href={`/jgumtow/${portfolioItem.id}/edit`}>Edit</a>
+                                    <form action={`/jgumtow/${portfolioItem.id}?_method=DELETE`} method="POST">
+                                        <input className="btn btn-outline-danger btn-sm" type="submit" value="Delete"/>
+                                    </form>
                                 </div>
                             )
                         })

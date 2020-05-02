@@ -79,7 +79,7 @@ router.post('/', (req, res)=>{
     } else {
         req.body.show = false;
     }
-
+    req.body.tags = req.body.tags.split(",");
     Portfolio.create(req.body, (error, PortfolioItem)=>{
         // res.send(PortfolioItem);
         res.redirect('/jgumtow');
@@ -88,6 +88,11 @@ router.post('/', (req, res)=>{
 
 
 // 06. Delete Route
+router.delete('/:id', (req, res)=>{
+    Portfolio.findByIdAndRemove(req.params.id, (err, itemRemoved)=>{
+        res.redirect('/jgumtow');
+    });
+});
 
 
 
@@ -99,10 +104,13 @@ router.put('/:id', (req, res)=>{
         req.body.show = false;
     }
 
-    Portfolio.findByIdAndUpdate(req.params.id, req.body, {new:true}, (error, PortfolioItem)=>{
-        // res.send(PortfolioItem);
+    req.body.tags = req.body.tags.split(",");
+    Portfolio.findByIdAndUpdate(req.params.id, req.body, {new:true}, (err, PortfolioItem)=>{
+        if(err){
+            console.log(err)
+        }
         res.redirect('/jgumtow');
-    })
+    });
 });
 
 
