@@ -25,6 +25,7 @@ class Index extends React.Component{
 
                                         </div>
                                     </a>
+                                    <a className="btn btn-outline-info btn-sm" href={`/jgumtow/${portfolioItem.id}/edit`}>Edit</a>
                                 </div>
                             )
                         })

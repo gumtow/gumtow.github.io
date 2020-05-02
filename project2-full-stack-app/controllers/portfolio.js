@@ -54,7 +54,13 @@ router.get('/:id', (req, res)=>{
 });
 
 // 04. Edit Route
-
+router.get('/:id/edit', (req,res)=>{
+    Portfolio.findById(req.params.id, (err, portfolioItem)=>{
+        res.render('Edit', {
+            portfolio:portfolioItem
+        });
+    });
+});
 
 
  /**************************************************************************
@@ -86,7 +92,18 @@ router.post('/', (req, res)=>{
 
 
 // 07. Update Route
+router.put('/:id', (req, res)=>{
+    if (req.body.show === 'on') {
+        req.body.show = true;
+    } else {
+        req.body.show = false;
+    }
 
+    Portfolio.findByIdAndUpdate(req.params.id, req.body, {new:true}, (error, PortfolioItem)=>{
+        // res.send(PortfolioItem);
+        res.redirect('/jgumtow');
+    })
+});
 
 
 
