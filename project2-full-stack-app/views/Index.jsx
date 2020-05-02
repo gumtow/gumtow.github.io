@@ -9,6 +9,9 @@ class Index extends React.Component{
         const {portfolio}= this.props;
         return(
             <Default title="The Portfolio of Jesse Gumtow">
+                <nav>
+                        <a className="btn btn-primary" href="/jgumtow/new">Create new portfolio item</a>
+                    </nav>
                 <div className="row">
                     {
                         portfolio.map((portfolioItem, i)=>{

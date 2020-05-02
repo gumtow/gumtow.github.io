@@ -40,7 +40,9 @@ router.get('/seed', (req, res)=>{
  });
 
 // 02. New Route
-
+router.get('/new', (req, res)=>{
+    res.render('New');
+});
 
 // 03. Show Route
 router.get('/:id', (req, res)=>{
@@ -65,7 +67,18 @@ router.get('/:id', (req, res)=>{
  * *************************************************************************/
 
 // 05. Create Route
+router.post('/', (req, res)=>{
+    if (req.body.show === 'on') {
+        req.body.show = true;
+    } else {
+        req.body.show = false;
+    }
 
+    Portfolio.create(req.body, (error, PortfolioItem)=>{
+        // res.send(PortfolioItem);
+        res.redirect('/jgumtow');
+    })
+});
 
 
 // 06. Delete Route
