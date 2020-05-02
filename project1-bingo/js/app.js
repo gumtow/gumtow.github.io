@@ -7,19 +7,23 @@ $(()=>{
 // =====================================================
 
 // Const
+
+// jquery
 const $user = $('#user');
 const $cpu = $('#cpu');
 const $squareToMatch = $('.square-to-match');
 const $noMatchBtn = $('#no-match');
 const $timer =$('#timer');
-const valArray = [];
-const valInPlay = [];
 const $winnerModal = $('#winner-modal');
 const $newGameModal = $('#new-game-modal');
 const $modalText = $('#modal-text h1');
 const $closeBtn = $('#close');
 const $submit = $('#inputButton');
 const $userName = $('#user-name');
+
+// value Arrays
+const valArray = [];
+const valInPlay = [];
 
 // Let
 let turn = "user";
